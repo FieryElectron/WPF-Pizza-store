@@ -1,0 +1,153 @@
+﻿<UserControl x:Class="PizzaStore.Views.IngredientView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PizzaStore.Views"
+             mc:Ignorable="d" 
+             xmlns:Resx="clr-namespace:PizzaStore.Properties"
+             
+             Loaded="OnLoadEvent"
+             
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid Margin="20" Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="20*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        
+        <!--Left Text-->
+        <TextBlock Grid.Column="0"
+                   Grid.Row="0"
+                   Text="{x:Static Resx:Resources.Ingredients}"
+                   Style="{StaticResource HeaderText}"/>
+
+        <!--Middle Text-->
+        <TextBlock Grid.Column="2"
+                    Grid.Row="0"
+                    Text="{x:Static Resx:Resources.IngredientInfo}"
+                    Style="{StaticResource HeaderText}"/>
+
+        <!--Right Text-->
+        <TextBlock Grid.Column="4"
+                   Grid.Row="0"
+                   Text="{x:Static Resx:Resources.ImageOptions}"
+                   Style="{StaticResource HeaderText}"/>
+
+        <!--Middle Button Text-->
+        <TextBlock Grid.Column="2"
+                   Grid.Row="4"
+                   Text="{x:Static Resx:Resources.IngredientImages}"
+                   Style="{StaticResource HeaderText}"/>
+        
+        <!--Search Bar Area-->
+
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+            <TextBox Name="IngredientSearchText" Style="{StaticResource SearchTextBox}"
+                     TextChanged="IngredientSearchOnChanged"/>
+            <Image Source="/PizzaStore;component/Resource/Search.png"
+                   Style="{StaticResource SearchImage}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="4" Grid.Row="1" Orientation="Horizontal">
+            <TextBox Style="{StaticResource SearchTextBox}"
+                     TextChanged="IngredientImageSearchOnChanged"/>
+            <Image Source="/PizzaStore;component/Resource/Search.png"
+                   Style="{StaticResource SearchImage}"/>
+        </StackPanel>
+
+
+
+        <!--Ingredients-->
+        <StackPanel Grid.Column="0"
+                    Grid.Row="2"
+                    Grid.RowSpan="5"
+                    Name="LeftRootPanel" >
+            <ListBox Name="Ingredient_IngredientListBox"
+                     Height="{Binding ElementName=LeftRootPanel, Path=ActualHeight}"
+                     ItemTemplate="{StaticResource IngredientExistingTemplateReadOnly}"/>
+        </StackPanel>
+
+        <!--Image-->
+        <StackPanel
+            Grid.Column="2"
+            Grid.Row="6"
+            DataContext="{Binding ElementName=Ingredient_IngredientListBox,Path=SelectedItem}">
+            <Image Source="{Binding ImagePath}"
+                   Style="{StaticResource BigImage}"
+                   Margin="30"/>
+        </StackPanel>
+
+        <!--Image List-->
+        <StackPanel Grid.Column="4"
+                    Grid.Row="2"
+                    Grid.RowSpan="5"
+                    Name="RightRootPanel">
+            <ListBox Name="Ingredient_ImageListBox"
+                     ItemTemplate="{StaticResource ImageTemplate}"
+                     Height="{Binding ElementName=RightRootPanel, Path=ActualHeight}"/>
+        </StackPanel>
+
+        <!--Ingredient Info-->
+        <StackPanel Grid.Column="2"
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    DataContext="{Binding ElementName=Ingredient_IngredientListBox,
+                                          Path=SelectedItem}" >
+            <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                <TextBlock Text="{x:Static Resx:Resources.IngredientName}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding Name}"
+                         Width="124"
+                         Style="{StaticResource TextBoxInput}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Margin="0 20 0 0">
+                <TextBlock Text="{x:Static Resx:Resources.IngredientPrice}"
+                           Style="{StaticResource ConstText}" />
+                <TextBox Text="{Binding Price}"
+                         Width="124"
+                         TextChanged="PriceOnChanged"
+                         Style="{StaticResource TextBoxInput}"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!--Left Button Group-->
+        <StackPanel Grid.Column="0"
+                    Grid.Row="7"
+                    Style="{StaticResource ButtonStackPanel}">
+            <Button Name="NewIngredientButton"
+                    Content="{x:Static Resx:Resources.New}"
+                    Click="Ingredient_New_Click"
+                    Style="{StaticResource NormalButton}" />
+            <Button Name="DeleteIngredientButton"
+                    Content="{x:Static Resx:Resources.Delete}"
+                    Click="Ingredient_Delete_Click"
+                    Style="{StaticResource NormalButton}" />
+        </StackPanel>
+
+        <!--Right Button Group-->
+        <StackPanel Grid.Column="4"
+                    Grid.Row="7" 
+                    Style="{StaticResource ButtonStackPanel}">
+            <Button Content="{x:Static Resx:Resources.Modify}"
+                    Click="Modify_Image_Click"
+                    Style="{StaticResource NormalButton}" />
+        </StackPanel>
+
+    </Grid>
+</UserControl>

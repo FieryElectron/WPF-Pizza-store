@@ -1,0 +1,125 @@
+﻿<Window x:Class="PizzaStore.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PizzaStore"
+        mc:Ignorable="d"
+        xmlns:views="clr-namespace:PizzaStore.Views"
+        xmlns:viewmodels ="clr-namespace:PizzaStore.ViewModels"
+        xmlns:Resx="clr-namespace:PizzaStore.Properties"
+        
+        Loaded="OnLoadEvent"
+        
+        ResizeMode ="NoResize"
+        Title="{x:Static Resx:Resources.AppName}"
+        Height="600" Width="1100">
+    <Window.Resources>
+        <DataTemplate x:Name="WelcomeTemplate" DataType="{x:Type viewmodels:WelcomeModel}">
+            <views:WelcomeView/>
+        </DataTemplate>
+
+        <DataTemplate x:Name="TakeOrderTemplate" DataType="{x:Type viewmodels:TakeOrderModel}">
+            <views:TakeOrderView/>
+        </DataTemplate>
+
+        <DataTemplate x:Name="OrderTemplate" DataType="{x:Type viewmodels:OrderModel}">
+            <views:OrderView/>
+        </DataTemplate>
+
+        <DataTemplate x:Name="PizzaTemplate" DataType="{x:Type viewmodels:PizzaModel}">
+            <views:PizzaView/>
+        </DataTemplate>
+
+        <DataTemplate x:Name="IngredientTemplate" DataType="{x:Type viewmodels:IngredientModel}">
+            <views:IngredientView/>
+        </DataTemplate>
+
+        <DataTemplate x:Name="ImageTemplate" DataType="{x:Type viewmodels:ImageModel}">
+            <views:ImageView/>
+        </DataTemplate>
+
+        <DataTemplate x:Name="SettingTemplate" DataType="{x:Type viewmodels:SettingModel}">
+            <views:SettingView/>
+        </DataTemplate>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!--<ContentControl Name="ContentControl1" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="13" Grid.RowSpan="2" Content="{Binding}" />-->
+        <Canvas Name="MainCanvas" Grid.Column="1" Grid.ColumnSpan="10">
+            <ContentControl Canvas.Left="0" Name="ContentControl1" Content="{Binding}"  Height="{Binding ActualHeight, ElementName=MainCanvas}" Width="{Binding ActualWidth, ElementName=MainCanvas}" />
+
+            <ContentControl Canvas.Left="1000" Name="ContentControl2" Content="{Binding}"  Height="{Binding ActualHeight, ElementName=MainCanvas}" Width="{Binding ActualWidth, ElementName=MainCanvas}" />
+        </Canvas>
+
+        <StackPanel Background="Gray" Grid.Column="0">
+            <Rectangle Fill="Black" Height="2" />
+            <Button Name="WelcomeButton"
+                    Content="{x:Static Resx:Resources.Welcome}"
+                    Click="SwitchView_Clicked"
+                    Style="{StaticResource NavigateButton}"/>
+            <Rectangle Fill="Black" Height="2" />
+
+            <Button Name="TakeOrderButton"
+                    Content="{x:Static Resx:Resources.TakeOrder}"
+                    Click="SwitchView_Clicked"
+                    Style="{StaticResource NavigateButton}"/>
+            <Rectangle Fill="Black" Height="2" />
+
+            <Button Name="OrderButton"
+                    Content="{x:Static Resx:Resources.Order}"
+                    Click="SwitchView_Clicked"
+                    Style="{StaticResource NavigateButton}"/>
+            <Rectangle Fill="Black" Height="2" />
+
+            <Button Name="PizzaButton"
+                    Content="{x:Static Resx:Resources.Pizza}"
+                    Click="SwitchView_Clicked" 
+                    Style="{StaticResource NavigateButton}"/>
+            <Rectangle Fill="Black" Height="2" />
+
+            <Button Name="IngredientButton"
+                    Content="{x:Static Resx:Resources.Ingredient}"
+                    Click="SwitchView_Clicked"
+                    Style="{StaticResource NavigateButton}"/>
+            <Rectangle Fill="Black" Height="2" />
+
+            <Button Name="ImageButton"
+                    Content="{x:Static Resx:Resources.Image}"
+                    Click="SwitchView_Clicked" 
+                    Style="{StaticResource NavigateButton}"/>
+            <Rectangle Fill="Black" Height="2" />
+
+            <Button Name="SettingButton"
+                    Content="{x:Static Resx:Resources.Setting}"
+                    Click="SwitchView_Clicked"
+                    Style="{StaticResource NavigateButton}"/>
+            <Rectangle Fill="Black" Height="2" />
+
+            <Button Name="AboutButton"
+                    Content="{x:Static Resx:Resources.About}"
+                    Click="AboutView_Clicked"
+                    Style="{StaticResource NavigateButton}"/>
+            <Rectangle Fill="Black" Height="2" />
+            <ComboBox Name="Language_Combox" Padding="3 0 0 0" SelectionChanged="Language_Combox_SelectionChanged"
+                      HorizontalContentAlignment="Center"/>
+        </StackPanel>
+
+
+
+    </Grid>
+</Window>

@@ -1,0 +1,184 @@
+﻿<UserControl x:Class="PizzaStore.Views.SettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PizzaStore.Views"
+             mc:Ignorable="d"
+             xmlns:Resx="clr-namespace:PizzaStore.Properties"
+             
+             Loaded="OnLoadEvent"
+             
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid Background="White" Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="10*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        
+        <!--Left Top Text-->
+        <TextBlock Grid.Column="0"
+                   Grid.Row="0"
+                   Text="{x:Static Resx:Resources.DefaultPizzaValue}"
+                   Style="{StaticResource HeaderText}"/>
+
+
+        <!--Left Bottom Text-->
+        <TextBlock Grid.Column="0"
+                   Grid.Row="3"
+                   Text="{x:Static Resx:Resources.DefaultIngredientValue}"
+                   Style="{StaticResource HeaderText}"/>
+
+        <!--Middle Top Text-->
+        <TextBlock Grid.Column="2"
+                   Grid.Row="0"
+                   Text="{x:Static Resx:Resources.DefaultCustomerValue}"
+                   Style="{StaticResource HeaderText}"/>
+
+        <TextBlock Grid.Column="2"
+                   Grid.Row="3"
+                   Text="{x:Static Resx:Resources.Notification}"
+                   Style="{StaticResource HeaderText}"/>
+
+        <!--Left Top Info-->
+        <StackPanel Grid.Column="0"
+                    Grid.Row="1"
+                    DataContext="{Binding TemplatePizza}">
+            <StackPanel Style="{StaticResource SettingGroup}">
+                <TextBlock Text="{x:Static Resx:Resources.PizzaName}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding Name}"
+                         Style="{StaticResource TextBoxInput}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SettingGroup}">
+                <TextBlock Text="{x:Static Resx:Resources.PizzaSizePriceUnit}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding SizePriceUnit}"
+                         LostFocus="UpdatePizzaPriceLostFocus"
+                         Style="{StaticResource TextBoxInput}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SettingGroup}">
+                <TextBlock Text="{x:Static Resx:Resources.PizzaSize}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding Size}"
+                         LostFocus="UpdatePizzaPriceLostFocus"
+                         Style="{StaticResource TextBoxInput}"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!--Left Bottom Info-->
+        <StackPanel Grid.Column="0"
+                    Grid.Row="4"
+                    DataContext="{Binding TemplateIngredient}">
+            <StackPanel Style="{StaticResource SettingGroup}">
+                <TextBlock Text="{x:Static Resx:Resources.IngredientName}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding Name}"
+                         Style="{StaticResource TextBoxInput}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SettingGroup}">
+                <TextBlock Text="{x:Static Resx:Resources.IngredientPrice}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding Price}"
+                         Style="{StaticResource TextBoxInput}"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!--Middle Top Info-->
+        <StackPanel Grid.Column="2"
+                    Grid.Row="4">
+            <StackPanel>
+                <StackPanel Style="{StaticResource SettingGroup}">
+                    <TextBlock Text="{x:Static Resx:Resources.ShowWelcomeOnStartUp}"
+                               Style="{StaticResource ConstText}" Width="280" />
+                    <CheckBox IsChecked="{Binding ShowWelcomeOnStartUp}" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Style="{StaticResource SettingGroup}">
+                    <TextBlock Text="{x:Static Resx:Resources.NotifyRestartNeededInfo}"
+                               Style="{StaticResource ConstText}" Width="280" />
+                    <CheckBox IsChecked="{Binding ShowRestartNeededInfo}" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Style="{StaticResource SettingGroup}">
+                    <TextBlock Text="{x:Static Resx:Resources.OrderMustHaveCustomerName}"
+                               Style="{StaticResource ConstText}" Width="280" />
+                    <CheckBox IsChecked="{Binding OrderMustHaveName}" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Style="{StaticResource SettingGroup}">
+                    <TextBlock Text="{x:Static Resx:Resources.RefreshInfoAfterOrder}"
+                               Style="{StaticResource ConstText}" Width="280" />
+                    <CheckBox IsChecked="{Binding RefreshInfoAfterOrder}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+
+
+        <StackPanel Grid.Column="2"
+                    Grid.Row="1"
+                    DataContext="{Binding TemplateOrder}">
+            <StackPanel Style="{StaticResource SettingGroup}">
+                <TextBlock Text="{x:Static Resx:Resources.OrderPayStatus}"
+                           Style="{StaticResource ConstText}"/>
+                <ComboBox Name="PayStatusComboBox"
+                          SelectedItem="{Binding PayStatus,Converter={StaticResource OrderPayStatusConveterKey}}"
+                          Width="130" />
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SettingGroup}">
+                <TextBlock Text="{x:Static Resx:Resources.CustomerFirstName}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding CustomerFirstName}"
+                         LostFocus="UpdatePizzaPriceLostFocus"
+                         Style="{StaticResource TextBoxReadOnly}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SettingGroup}">
+                <TextBlock Text="{x:Static Resx:Resources.CustomerLastName}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding CustomerLastName}"
+                         LostFocus="UpdatePizzaPriceLostFocus"
+                         Style="{StaticResource TextBoxReadOnly}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SettingGroup}">
+                <TextBlock Text="{x:Static Resx:Resources.CustomerPhone}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding CustomerPhone}"
+                         LostFocus="UpdatePizzaPriceLostFocus"
+                         Style="{StaticResource TextBoxReadOnly}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SettingGroup}">
+                <TextBlock Text="{x:Static Resx:Resources.CustomerEmail}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding CustomerEmail}"
+                         LostFocus="UpdatePizzaPriceLostFocus"
+                         Style="{StaticResource TextBoxReadOnly}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SettingGroup}">
+                <TextBlock Text="{x:Static Resx:Resources.CustomerAddress}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding CustomerAddress}"
+                         LostFocus="UpdatePizzaPriceLostFocus"
+                         Style="{StaticResource TextBoxReadOnly}"/>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

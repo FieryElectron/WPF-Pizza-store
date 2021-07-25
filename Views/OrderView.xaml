@@ -1,0 +1,196 @@
+﻿<UserControl x:Class="PizzaStore.Views.OrderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PizzaStore.Views"
+             xmlns:converters="clr-namespace:PizzaStore.Classes"
+             mc:Ignorable="d" 
+             xmlns:Resx="clr-namespace:PizzaStore.Properties"
+             
+             Loaded="OnLoadEvent"
+             
+             d:DesignHeight="600" d:DesignWidth="1000">
+
+    <UserControl.Resources>
+        <converters:OrderPayStatusConveter x:Key="OrderPayStatusConveterKey"/>
+    </UserControl.Resources>
+    <Grid Name="OrderViewGrid" Background="white" Margin="20" >
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="20*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <!--Left Text-->
+        <TextBlock Grid.Column="0"
+                   Grid.Row="0"
+                   Text="{x:Static Resx:Resources.OrderHistory}"
+                   Style="{StaticResource HeaderText}"/>
+ 
+
+        <!--Middle Text-->
+        <TextBlock Grid.Column="2"
+                   Grid.Row="0"
+                   Text="{x:Static Resx:Resources.OrderInfo}"
+                   Style="{StaticResource HeaderText}"/>
+
+
+        <!--Right Text-->
+        <TextBlock Grid.Column="4"
+                   Grid.Row="0" 
+                   Text="{x:Static Resx:Resources.PizzaList}"
+                   Style="{StaticResource HeaderText}"/>
+
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+            <TextBox Name="OrderSearchText"
+                     Style="{StaticResource SearchTextBox}"
+                     TextChanged="OrderHistorySearchOnChanged"/>
+            <Image Source="/PizzaStore;component/Resource/Search.png"
+                   Style="{StaticResource SearchImage}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="4" Grid.Row="1" Orientation="Horizontal">
+            <TextBox Name="PizzaListSearchText"
+                     Style="{StaticResource SearchTextBox}"
+                     TextChanged="OrderPizzaSearchOnChanged"/>
+            <Image Source="/PizzaStore;component/Resource/Search.png"
+                   Style="{StaticResource SearchImage}"/>
+        </StackPanel>
+
+        <!--Order history-->
+        <StackPanel Name="OrderList_RootPanel" Grid.Column="0" Grid.Row="2" Grid.RowSpan="5">
+            <ListBox Name="OrderHistoryListBox" 
+                     ItemsSource="{Binding}" 
+                     SelectionChanged="OrderSelectionOnChanged"
+                     Height="{Binding ElementName=OrderList_RootPanel , Path=ActualHeight}"
+                     ItemTemplate="{StaticResource OrderTemplate}"/>
+        </StackPanel>
+
+        <!--Pizza List-->
+        <StackPanel Grid.Column="4"
+                    Grid.Row="2"
+                    Grid.RowSpan="5"
+                    Name="Right_RootPanel"
+                    DataContext="{Binding ElementName=OrderHistoryListBox,
+                                          Path=SelectedItem.PizzaList}">
+            <ListBox Name="OrderPizzaListBox"  
+                     ItemsSource="{Binding}"
+                     Height="{Binding ElementName=Right_RootPanel , Path=ActualHeight}"
+                     ItemTemplate="{StaticResource PizzaTemplateReadOnly}"/>
+        </StackPanel>
+
+        <!--Order Info-->
+        <StackPanel Grid.Column="2"
+                    Grid.Row="1"
+                    Grid.RowSpan="6"
+                    DataContext="{Binding ElementName=OrderHistoryListBox,
+                                          Path=SelectedItem}">
+            <StackPanel Style="{StaticResource OrderDetailPanel}">
+                <TextBlock Text="{x:Static Resx:Resources.OrderID}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBlock Text="{Binding ID}"
+                           Style="{StaticResource TextBlockReadOnly}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource OrderDetailPanel}">
+                <TextBlock Text="{x:Static Resx:Resources.OrderDate}"
+                           Style="{StaticResource ConstText}" />
+                <TextBlock Text="{Binding Date}"
+                           Style="{StaticResource TextBlockReadOnly}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource OrderDetailPanel}">
+                <TextBlock Text="{x:Static Resx:Resources.OrderTime}"
+                           Style="{StaticResource ConstText}" />
+                <TextBlock Text="{Binding Time}"
+                           Style="{StaticResource TextBlockReadOnly}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource OrderDetailPanel}">
+                <TextBlock Text="{x:Static Resx:Resources.OrderPrice}"
+                           Style="{StaticResource ConstText}" />
+                <TextBlock Text="{Binding Price}"
+                           Style="{StaticResource TextBlockReadOnly}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource OrderDetailPanel}">
+                <TextBlock Text="{x:Static Resx:Resources.OrderPayStatus}"
+                           Style="{StaticResource ConstText}" />
+
+                <ComboBox Name="PayStatusComboBox"
+                          SelectedItem="{Binding PayStatus,Converter={StaticResource OrderPayStatusConveterKey}}"
+                          Width="130" FontSize="15"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource OrderDetailPanel}">
+                <TextBlock Text="{x:Static Resx:Resources.CustomerFirstName}"
+                           Style="{StaticResource ConstText}" />
+                <TextBox Text="{Binding CustomerFirstName}"
+                           Style="{StaticResource TextBoxReadOnly}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource OrderDetailPanel}">
+                <TextBlock Text="{x:Static Resx:Resources.CustomerLastName}"
+                           Style="{StaticResource ConstText}" />
+                <TextBox Text="{Binding CustomerLastName}"
+                           Style="{StaticResource TextBoxReadOnly}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource OrderDetailPanel}">
+                <TextBlock Text="{x:Static Resx:Resources.CustomerPhone}"
+                           Style="{StaticResource ConstText}" />
+                <TextBox Text="{Binding CustomerPhone}"
+                           Style="{StaticResource TextBoxReadOnly}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource OrderDetailPanel}">
+                <TextBlock Text="{x:Static Resx:Resources.CustomerEmail}"
+                           Style="{StaticResource ConstText}" />
+                <TextBox Text="{Binding CustomerEmail}"
+                           Style="{StaticResource TextBoxReadOnly}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource OrderDetailPanel}">
+                <TextBlock Text="{x:Static Resx:Resources.CustomerAddress}"
+                           Style="{StaticResource ConstText}" />
+                <TextBox Text="{Binding CustomerAddress}"
+                           Style="{StaticResource TextBoxReadOnly}"/>
+            </StackPanel>
+
+            
+
+
+
+        </StackPanel>
+
+        <!--Button Group-->
+        <StackPanel Grid.Column="0"
+                    Grid.Row="7" 
+                    Style="{StaticResource ButtonStackPanel}">
+            <Button Name="CancelOrderButton"
+                    Content="{x:Static Resx:Resources.Cancel}"
+                    Click="CancelOrder_Click"
+                    Style="{StaticResource NormalButton}"/>
+            <Button Name="CancelOrderBsutton"
+                    Content="{x:Static Resx:Resources.CancelOrder}"
+                    Click="CancelReOrder_Click"
+                    Style="{StaticResource NormalButton}" />
+        </StackPanel>
+
+    </Grid>
+</UserControl>

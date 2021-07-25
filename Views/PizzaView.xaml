@@ -1,0 +1,231 @@
+﻿<UserControl x:Class="PizzaStore.Views.PizzaView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PizzaStore.Views"
+             mc:Ignorable="d" 
+             xmlns:Resx="clr-namespace:PizzaStore.Properties"
+             
+             Loaded="OnLoadEvent"
+             
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid Margin="20" Background="white">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="20*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        
+        <!--Left Text-->
+        <TextBlock Grid.Column="0"
+                    Grid.Row="0"
+                    Text="{x:Static Resx:Resources.Pizzas}"
+                    Style="{StaticResource HeaderText}"/>
+
+        
+        <!--Middle Text-->
+        <TextBlock Grid.Column="2"
+                   Grid.Row="0"
+                   Text="{x:Static Resx:Resources.PizzaInfo}"
+                   Style="{StaticResource HeaderText}"/>
+
+        
+        <!--Right Text-->
+        <TextBlock Grid.Column="4"
+                   Grid.Row="0"
+                   Text="{x:Static Resx:Resources.CurrentIngredients}"
+                   Style="{StaticResource HeaderText}"/>
+
+
+        <!--Middle Bottom Text-->
+        <TextBlock Grid.Column="2"
+                   Grid.Row="4"
+                   Text="{x:Static Resx:Resources.ImageOptions}"
+                   Style="{StaticResource HeaderText}"/>
+
+
+        <!--Right Bottom Text-->
+        <TextBlock Grid.Column="4"
+                   Grid.Row="4"
+                   Text="{x:Static Resx:Resources.Ingredients}"
+                   Style="{StaticResource HeaderText}"/>
+        
+        <!--Search Bar Area-->
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+            <TextBox Name="PizzaSearchText"
+                     Style="{StaticResource SearchTextBox}"
+                     TextChanged="PizzaSearchOnChanged"/>
+            <Image Source="/PizzaStore;component/Resource/Search.png"
+                   Style="{StaticResource SearchImage}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="4" Grid.Row="1" Orientation="Horizontal">
+            <TextBox Name="CurrentFilterText"
+                     Style="{StaticResource SearchTextBox}"
+                     TextChanged="PizzaCurrentIngredientSearchOnChanged"/>
+            <Image Source="/PizzaStore;component/Resource/Search.png"
+                   Style="{StaticResource SearchImage}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Grid.Row="5" Orientation="Horizontal">
+            <TextBox Style="{StaticResource SearchTextBox}"
+                     TextChanged="PizzaImageSearchOnChanged"/>
+            <Image Source="/PizzaStore;component/Resource/Search.png"
+                   Style="{StaticResource SearchImage}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="4" Grid.Row="5" Orientation="Horizontal">
+            <TextBox Style="{StaticResource SearchTextBox}"
+                     TextChanged="PizzaIngredientSearchOnChanged"/>
+            <Image Source="/PizzaStore;component/Resource/Search.png"
+                   Style="{StaticResource SearchImage}"/>
+        </StackPanel>
+
+
+        <!--Pizza List-->
+        <StackPanel Grid.Column="0"
+                    Grid.Row="2"
+                    Grid.RowSpan="5"
+                    Name="LeftRootPanel"  >
+            <ListBox Name="Pizza_PizzaListBox"
+                     SelectionChanged="PizzaSelectionChanged"
+                     ItemTemplate="{StaticResource PizzaExistingTemplateReadOnly}"
+                     Height="{Binding ElementName=LeftRootPanel, Path=ActualHeight}"/>
+        </StackPanel>
+
+        <!--Pizza Info-->
+        <StackPanel Grid.Column="2"
+                    Grid.Row="1" 
+                    Grid.RowSpan="2"
+                    DataContext="{Binding ElementName=Pizza_PizzaListBox,Path=SelectedItem}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{x:Static Resx:Resources.Name}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding Name}"
+                         Width="124"
+                         Style="{StaticResource TextBoxInput}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="0 2 0 0">
+                <TextBlock Text="{x:Static Resx:Resources.SizePriceUnit}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding SizePriceUnit}"
+                         TextChanged="PriceOnChanged"
+                         LostFocus="UpdatePizzaPriceLostFocus"
+                         Width="124"
+                         Style="{StaticResource TextBoxInput}"  />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="0 2 0 0">
+                <TextBlock Text="{x:Static Resx:Resources.Size}"
+                           Style="{StaticResource ConstText}"/>
+                <TextBox Text="{Binding Size}"
+                         LostFocus="UpdatePizzaPriceLostFocus"
+                         Width="124"
+                         Style="{StaticResource TextBoxInput}"  />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="0 2 0 0">
+                <TextBlock Text="{x:Static Resx:Resources.Price}"
+                           Style="{StaticResource ConstText}"/>
+
+                <StackPanel Width="124">
+                    <TextBlock Text="{Binding Price}"
+                               FontSize="15"
+                               FontFamily="Comic Sans MS"
+                           HorizontalAlignment="Center"/>
+                </StackPanel>
+
+            </StackPanel>
+
+            <Image Source="{Binding ImagePath}"
+                   Style="{StaticResource BigImage}"/>
+        </StackPanel>
+
+        <!--Current Ingredient List-->
+        <StackPanel Grid.Column="4"
+                    Grid.Row="2"
+                    Name="MiddleRootPanel"
+                    DataContext="{Binding ElementName=Pizza_PizzaListBox,
+                                          Path=SelectedItem.Ingredients}">
+            <ListBox Name="Pizza_IngredientListBox"
+                     ItemsSource="{Binding}"
+                     ItemTemplate="{StaticResource IngredientTemplateReadOnly}" 
+                     Height="{Binding ElementName=MiddleRootPanel, Path=ActualHeight}"/>
+        </StackPanel>
+
+        <!--Ingredient List-->
+        <StackPanel Grid.Column="4"
+                    Grid.Row="6"
+                    Name="RightRootPanel" >
+            <ListBox Name="Pizza_AvailableIngredientListBox"
+                     ItemTemplate="{StaticResource IngredientTemplateEditable}"
+                     Height="{Binding ElementName=RightRootPanel, Path=ActualHeight}"/>
+        </StackPanel>
+
+        <!--Image List-->
+        <StackPanel Grid.Column="2"
+                    Grid.Row="6" 
+                    Name="MiddleBottomRootPanel" >
+            <ListBox Name="Pizza_PizzaImageListBox"
+                     ItemTemplate="{StaticResource ImageTemplate}" 
+                     Height="{Binding ElementName=MiddleBottomRootPanel, Path=ActualHeight}"/>
+        </StackPanel>
+
+        <!--Left Button Group-->
+        <StackPanel Grid.Column="0"
+                    Grid.Row="7"
+                    Style="{StaticResource ButtonStackPanel}">
+            <Button Name="NewPizzaButton"
+                    Content="{x:Static Resx:Resources.New}"
+                    Click="Pizza_New_Click"
+                    Style="{StaticResource NormalButton}" />
+            <Button Name="DeletePizzaButton"
+                    Content="{x:Static Resx:Resources.Delete}"
+                    Click="Pizza_Delete_Click"
+                    Style="{StaticResource NormalButton}" />
+        </StackPanel>
+
+        <!--Middle Button-->
+        <StackPanel Grid.Column="2"
+                    Grid.Row="7"
+                    Style="{StaticResource ButtonStackPanel}">
+            <Button Content="{x:Static Resx:Resources.Modify}"
+                    Click="Pizza_ImageModify_Click"
+                    Style="{StaticResource NormalButton}" />
+        </StackPanel>
+
+        <!--Right Button Group-->
+        <StackPanel Grid.Column="4"
+                    Grid.Row="3"
+                    Style="{StaticResource ButtonStackPanel}">
+            <Button Name="RemoveIngredientButton"
+                    Content="{x:Static Resx:Resources.Remove}"
+                    Click="Pizza_Ingredient_Delete_Click"
+                    Style="{StaticResource NormalButton}" />
+            <Button Name="AddIngredientButton"
+                    Content="{x:Static Resx:Resources.Add}"
+                    Click="AddNewIngredient_Click"
+                    Style="{StaticResource NormalButton}"/>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

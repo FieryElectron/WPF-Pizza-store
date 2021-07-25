@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="PizzaStore.Views.WelcomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PizzaStore.Views"
+             mc:Ignorable="d" 
+             xmlns:Resx="clr-namespace:PizzaStore.Properties"
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid Background="White">
+        
+        <StackPanel>
+            <Image Source="/PizzaStore;component/Resource/PizzaStore.png"
+                   Height="200"
+                   Width="200"
+                   Margin="70" />
+            <TextBlock Text="{x:Static Resx:Resources.WelcomeToPizzaStore}"
+                       FontSize="50"
+                       HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <TextBlock Text="{x:Static Resx:Resources.Alwaysshowonstartup}"
+                           Margin="0 110 10 0"/>
+                <CheckBox Name="Welcome_CheckBox"
+                          IsChecked="{Binding ShowWelcomeOnStartUp}"
+                          Margin="0 110 50 0" />
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</UserControl>
